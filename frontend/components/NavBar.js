@@ -11,7 +11,7 @@ const LINKS = [
   { href: '/dashboard', label: 'Dashboard', active: (p) => p.startsWith('/dashboard') || p.startsWith('/products') },
 ];
 
-const REPO_URL = 'https://github.com/dhruvguptadev/THE-PRICE-TRACK-ASSIGN';
+const REPO_URL = 'https://github.com/dhruvguptadev/THE-PRICE-TRACK-ASSIGN-';
 
 export default function NavBar() {
   const pathname = usePathname() ?? '/';
