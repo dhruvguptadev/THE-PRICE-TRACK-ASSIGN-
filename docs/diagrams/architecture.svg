@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 770" width="1200" height="770" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Nightwatch system architecture</title>
+  <style>
+    .h1 { font-size: 20px; font-weight: 600; fill: #0f172a; letter-spacing: -0.01em; }
+    .lead { font-size: 13px; fill: #64748b; }
+    .t { font-size: 15px; font-weight: 600; fill: #0f172a; }
+    .s { font-size: 12.5px; fill: #475569; }
+    .m { font-family: 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; fill: #334155; }
+    .lbl { font-size: 11.5px; font-weight: 500; fill: #64748b; }
+    .tag { font-size: 11px; font-weight: 600; fill: #115e59; }
+    .box { fill: #ffffff; stroke: #d5dee3; stroke-width: 1; }
+    .inner { fill: #f7f9f9; stroke: #dfe7ea; stroke-width: 1; }
+    .accent { fill: #e3f3f1; stroke: #a7d7cf; stroke-width: 1; }
+    .edge { stroke: #64748b; stroke-width: 1.5; fill: none; }
+    .dash { stroke-dasharray: 5 4; }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <rect width="1200" height="770" rx="16" fill="#f6f8f8" />
+
+  <text class="h1" x="40" y="52">Nightwatch · system architecture</text>
+  <text class="lead" x="40" y="76">Next.js on Vercel · Express and Playwright on Render · Postgres on Supabase · triggered by cron-job.org</text>
+
+  <!-- ── Left column: people and triggers ───────────────────────── -->
+  <rect class="box" x="40" y="110" width="220" height="74" rx="12" />
+  <text class="t" x="56" y="138">Browser</text>
+  <text class="s" x="56" y="158">Landing page and dashboard</text>
+  <text class="s" x="56" y="174">(React client components)</text>
+
+  <rect class="box" x="40" y="300" width="220" height="124" rx="12" />
+  <text class="t" x="56" y="328">cron-job.org</text>
+  <text class="m" x="56" y="352">POST /api/scrape/run</text>
+  <text class="s" x="56" y="369">every 2 h · Bearer secret</text>
+  <text class="m" x="56" y="394">GET /api/health</text>
+  <text class="s" x="56" y="411">every 10 min · keeps it awake</text>
+
+  <rect class="box" x="40" y="444" width="220" height="84" rx="12" />
+  <text class="t" x="56" y="472">UptimeRobot</text>
+  <text class="m" x="56" y="494">GET /api/health</text>
+  <text class="s" x="56" y="512">every 5 min · emails on downtime</text>
+
+  <rect class="box" x="40" y="556" width="220" height="114" rx="12" stroke-dasharray="5 4" />
+  <text class="t" x="56" y="584">Local headed run</text>
+  <text class="m" x="56" y="606">npm run scrape:headed</text>
+  <text class="s" x="56" y="626">Same scraper, visible Chromium</text>
+  <text class="s" x="56" y="643">Rows tagged trigger = demo</text>
+  <text class="s" x="56" y="660">Used for the demo recording</text>
+
+  <!-- ── Vercel ──────────────────────────────────────────────────── -->
+  <rect class="box" x="300" y="110" width="290" height="74" rx="12" />
+  <text class="t" x="316" y="138">Next.js 16 frontend</text>
+  <text class="tag" x="530" y="137">Vercel</text>
+  <text class="s" x="316" y="158">Search · track · history charts</text>
+  <text class="s" x="316" y="174">Scrape log · CSV export</text>
+
+  <path class="edge" d="M260,147 H296" marker-end="url(#a)" />
+  <text class="lbl" x="264" y="139">loads</text>
+
+  <!-- ── Render container ────────────────────────────────────────── -->
+  <rect class="box" x="300" y="220" width="520" height="470" rx="14" />
+  <rect x="316" y="233" width="56" height="20" rx="10" fill="#e3f3f1" />
+  <text class="tag" x="326" y="247">Render</text>
+  <text class="s" x="382" y="248">Express API · Node 20 · free web service (512 MB)</text>
+
+  <rect class="inner" x="320" y="270" width="480" height="96" rx="10" />
+  <text class="t" x="336" y="294">HTTP API</text>
+  <text class="m" x="336" y="316">GET  /products/search · /tracked-products · /export.csv</text>
+  <text class="m" x="336" y="334">POST /tracked-products · /scrape/run → 202 Accepted</text>
+  <text class="m" x="336" y="352">GET  /health → db, catalog, schedulerStale</text>
+
+  <path class="edge" d="M560,366 V380" marker-end="url(#a)" />
+
+  <rect class="accent" x="320" y="384" width="480" height="110" rx="10" />
+  <text class="t" x="336" y="408">Scrape orchestrator</text>
+  <text class="s" x="336" y="432">One run per 2-hour slot (run_key) · Postgres advisory lock</text>
+  <text class="s" x="336" y="452">Targets one at a time · up to 3 attempts, jittered backoff</text>
+  <text class="s" x="336" y="472">Success = one transaction: attempt + observation + price</text>
+
+  <path class="edge" d="M435,494 V508" marker-end="url(#a)" />
+  <path class="edge" d="M685,494 V508" marker-end="url(#a)" />
+
+  <rect class="inner" x="320" y="512" width="230" height="158" rx="10" />
+  <text class="t" x="336" y="536">Price scraper</text>
+  <text class="tag" x="467" y="535">Playwright</text>
+  <text class="s" x="336" y="560">One Chromium per batch</text>
+  <text class="s" x="336" y="579">Fresh context per target</text>
+  <text class="s" x="336" y="598">Hover → click → wait for price</text>
+  <text class="s" x="336" y="617">Reads only the visible price</text>
+  <text class="s" x="336" y="636">Validates before any write</text>
+
+  <rect class="inner" x="570" y="512" width="230" height="158" rx="10" />
+  <text class="t" x="586" y="536">Store client</text>
+  <text class="tag" x="753" y="535">HTTP</text>
+  <text class="s" x="586" y="560">Catalog sync → 960 / 960</text>
+  <text class="s" x="586" y="579">Product options, always live</text>
+  <text class="s" x="586" y="598">UI class manifest</text>
+  <text class="s" x="586" y="617">Retries 429, 5xx, timeouts</text>
+
+  <!-- Into the API -->
+  <path class="edge" d="M150,184 V292 H316" marker-end="url(#a)" />
+  <text class="lbl" x="160" y="284">REST · CORS-limited</text>
+  <path class="edge" d="M260,352 H316" marker-end="url(#a)" />
+  <path class="edge" d="M260,486 H296" marker-end="url(#a)" />
+  <path class="edge dash" d="M260,613 H316" marker-end="url(#a)" />
+  <text class="lbl" x="266" y="605">same</text>
+  <text class="lbl" x="266" y="630">code</text>
+
+  <!-- ── Supabase ────────────────────────────────────────────────── -->
+  <rect class="box" x="880" y="220" width="280" height="250" rx="12" />
+  <text class="t" x="896" y="248">Supabase Postgres</text>
+  <text class="s" x="896" y="268">Prisma 7 · session pooler · UTC</text>
+  <line x1="896" x2="1144" y1="284" y2="284" stroke="#e2e8f0" />
+  <text class="m" x="896" y="308">tracked_products</text>
+  <text class="s" x="1044" y="308">current price</text>
+  <text class="m" x="896" y="334">price_observations</text>
+  <text class="s" x="1044" y="334">history</text>
+  <text class="m" x="896" y="360">scrape_attempts</text>
+  <text class="s" x="1044" y="360">every attempt</text>
+  <text class="m" x="896" y="386">scrape_runs</text>
+  <text class="s" x="1044" y="386">one per slot</text>
+  <text class="m" x="896" y="412">catalog_products</text>
+  <text class="s" x="1044" y="412">search cache</text>
+  <text class="s" x="896" y="448">Prices are only ever written by a</text>
+  <text class="s" x="896" y="464">successful, validated attempt.</text>
+
+  <path class="edge" d="M824,340 H876" marker-start="url(#a)" marker-end="url(#a)" />
+  <text class="lbl" x="850" y="330" text-anchor="middle">read</text>
+  <text class="lbl" x="850" y="358" text-anchor="middle">write</text>
+
+  <!-- ── Store ───────────────────────────────────────────────────── -->
+  <rect class="box" x="880" y="500" width="280" height="184" rx="12" />
+  <text class="t" x="896" y="528">Mock storefront</text>
+  <text class="m" x="896" y="548">demo.inelabteamdev.com</text>
+  <line x1="896" x2="1144" y1="562" y2="562" stroke="#e2e8f0" />
+  <text class="s" x="896" y="584">JSON API: listings, items, manifest</text>
+  <text class="m" x="896" y="602">/api/v2/listings · /items/:id</text>
+  <text class="s" x="896" y="630">Product page, price hidden behind</text>
+  <text class="s" x="896" y="647">a challenge, hover and click</text>
+  <text class="m" x="896" y="666">/item/:id</text>
+
+  <path class="edge" d="M800,590 H876" marker-end="url(#a)" />
+  <text class="lbl" x="840" y="582" text-anchor="middle">HTTP</text>
+  <path class="edge" d="M435,670 V730 H1020 V688" marker-end="url(#a)" />
+  <text class="lbl" x="600" y="722">headless Chromium · opens /item/:id like a customer</text>
+</svg>

@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* Design tokens. Light only: slate neutrals with a teal accent. */
+:root {
+  color-scheme: light;
+  --page: #f6f8f8;
+  --surface: #ffffff;
+  --surface-2: #eef3f3;
+  --ink: #0f172a;
+  --ink-2: #475569;
+  --muted: #64748b;
+  --grid: #e2e8f0;
+  --axis: #cbd5e1;
+  --border: rgba(15, 23, 42, 0.09);
+  --accent: #0f766e;
+  --accent-strong: #115e59;
+  --accent-soft: #e3f3f1;
+  --accent-ink: #ffffff;
+  --series-1: #0f766e;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --warning-ink: #8a5a00;
+  --critical: #d03b3b;
+  --critical-ink: #b42323;
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-grid: var(--grid);
+  --color-line: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-good: var(--good);
+  --color-good-ink: var(--good-ink);
+  --color-warning: var(--warning);
+  --color-warning-ink: var(--warning-ink);
+  --color-critical: var(--critical);
+  --color-critical-ink: var(--critical-ink);
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  /* Inter's straight-sided 1, open 4/6/9 and single-storey tails read cleaner in dense UI. */
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+/* Faint dot grid behind the landing hero, fading out towards the bottom. */
+.bg-dots {
+  background-image: radial-gradient(var(--axis) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: 0.55;
+  mask-image: radial-gradient(ellipse 80% 70% at 70% 40%, #000 30%, transparent 75%);
+}
+
+/* Soft teal wash behind the hero's log card. */
+.hero-glow {
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--accent) 14%, transparent), transparent);
+}
+
+/* Resting card: hairline ring plus a barely-there lift. */
+.card {
+  box-shadow:
+    0 0 0 1px var(--border),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+/* Closing call to action: deep teal with a faint grid. */
+.cta-band {
+  background:
+    radial-gradient(ellipse 60% 120% at 100% 0%, color-mix(in oklab, var(--accent) 55%, transparent), transparent),
+    linear-gradient(135deg, #0b2a2a, #0f172a);
+}
+.cta-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(90deg, transparent, #000 60%);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}

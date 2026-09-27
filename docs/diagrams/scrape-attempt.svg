@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 690" width="1200" height="690" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Nightwatch: one scrape attempt</title>
+  <style>
+    .h1 { font-size: 20px; font-weight: 600; fill: #0f172a; letter-spacing: -0.01em; }
+    .lead { font-size: 13px; fill: #64748b; }
+    .t { font-size: 14px; font-weight: 600; fill: #0f172a; }
+    .s { font-size: 12.5px; fill: #475569; }
+    .m { font-family: 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; fill: #334155; }
+    .n { font-size: 11.5px; font-weight: 600; fill: #ffffff; }
+    .lbl { font-size: 11.5px; font-weight: 500; fill: #64748b; }
+    .box { fill: #ffffff; stroke: #d5dee3; }
+    .edge { stroke: #64748b; stroke-width: 1.5; fill: none; }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b" /></marker>
+  </defs>
+
+  <rect width="1200" height="690" rx="16" fill="#f6f8f8" />
+  <text class="h1" x="40" y="52">One scrape attempt</text>
+  <text class="lead" x="40" y="76">About 7 seconds when the page behaves. Any step can fail; what happens next depends on why.</text>
+
+  <!-- Row 1: left to right -->
+  <rect class="box" x="40" y="110" width="255" height="96" rx="12" />
+  <circle cx="64" cy="136" r="11" fill="#0f766e" /><text class="n" x="64" y="140" text-anchor="middle">1</text>
+  <text class="t" x="84" y="141">Option still exists?</text>
+  <text class="m" x="56" y="168">GET /api/v2/items/:id</text>
+  <text class="s" x="56" y="188">Cheap check before any browser</text>
+
+  <rect class="box" x="330" y="110" width="255" height="96" rx="12" />
+  <circle cx="354" cy="136" r="11" fill="#0f766e" /><text class="n" x="354" y="140" text-anchor="middle">2</text>
+  <text class="t" x="374" y="141">Open the product page</text>
+  <text class="s" x="346" y="168">Fresh browser context</text>
+  <text class="s" x="346" y="188">Use the page's own class map</text>
+
+  <rect class="box" x="620" y="110" width="255" height="96" rx="12" />
+  <circle cx="644" cy="136" r="11" fill="#0f766e" /><text class="n" x="644" y="140" text-anchor="middle">3</text>
+  <text class="t" x="664" y="141">Right product, no wall</text>
+  <text class="s" x="636" y="168">Heading must match the name</text>
+  <text class="s" x="636" y="188">Cookie overlay → click Reject</text>
+
+  <rect class="box" x="910" y="110" width="255" height="96" rx="12" />
+  <circle cx="934" cy="136" r="11" fill="#0f766e" /><text class="n" x="934" y="140" text-anchor="middle">4</text>
+  <text class="t" x="954" y="141">Select the option</text>
+  <text class="s" x="926" y="168">Click the chip, confirm pressed</text>
+  <text class="s" x="926" y="188">Quote key <tspan class="m">opt=</tspan> must match</text>
+
+  <path class="edge" d="M295,158 H326" marker-end="url(#a)" />
+  <path class="edge" d="M585,158 H616" marker-end="url(#a)" />
+  <path class="edge" d="M875,158 H906" marker-end="url(#a)" />
+  <path class="edge" d="M1037,206 V256" marker-end="url(#a)" />
+
+  <!-- Row 2: right to left -->
+  <rect class="box" x="910" y="260" width="255" height="96" rx="12" />
+  <circle cx="934" cy="286" r="11" fill="#0f766e" /><text class="n" x="934" y="290" text-anchor="middle">5</text>
+  <text class="t" x="954" y="291">Unlock the price</text>
+  <text class="s" x="926" y="318">Real mouse moves over the panel</text>
+  <text class="s" x="926" y="338">Click “Check today’s price”</text>
+
+  <rect class="box" x="620" y="260" width="255" height="96" rx="12" />
+  <circle cx="644" cy="286" r="11" fill="#0f766e" /><text class="n" x="644" y="290" text-anchor="middle">6</text>
+  <text class="t" x="664" y="291">Wait for the real price</text>
+  <text class="s" x="636" y="318">Visible, fully opaque, ≤ 20 s</text>
+  <text class="s" x="636" y="338">A dimmed price is never read</text>
+
+  <rect class="box" x="330" y="260" width="255" height="96" rx="12" />
+  <circle cx="354" cy="286" r="11" fill="#0f766e" /><text class="n" x="354" y="290" text-anchor="middle">7</text>
+  <text class="t" x="374" y="291">Read and normalize</text>
+  <text class="s" x="346" y="318">Only the visible price, no decoys</text>
+  <text class="s" x="346" y="338">Strip ₹, zero-width, 1,29,999</text>
+
+  <rect x="40" y="260" width="255" height="96" rx="12" fill="#e3f3f1" stroke="#a7d7cf" />
+  <text class="t" x="56" y="291">Validate</text>
+  <text class="s" x="56" y="318">Name, option, price &gt; 0,</text>
+  <text class="s" x="56" y="338">stock ≥ 0, exactly one amount</text>
+
+  <path class="edge" d="M910,308 H879" marker-end="url(#a)" />
+  <path class="edge" d="M620,308 H589" marker-end="url(#a)" />
+  <path class="edge" d="M330,308 H299" marker-end="url(#a)" />
+
+  <!-- Outcomes -->
+  <path class="edge" d="M167,356 V416" marker-end="url(#a)" />
+  <text class="lbl" x="176" y="392">valid</text>
+
+  <path class="edge" d="M457,356 V416" marker-end="url(#a)" stroke-dasharray="5 4" />
+  <text class="lbl" x="466" y="392">any step throws, or validation fails</text>
+
+  <rect x="40" y="420" width="255" height="160" rx="12" fill="#eef8ee" stroke="#9fd49f" />
+  <text class="t" x="56" y="448" fill="#006300">✓ Success</text>
+  <text class="s" x="56" y="476">One database transaction:</text>
+  <text class="m" x="56" y="498">scrape_attempts</text>
+  <text class="m" x="56" y="516">price_observations</text>
+  <text class="m" x="56" y="534">tracked_products</text>
+  <text class="s" x="56" y="560">All three rows, or none.</text>
+
+  <rect class="box" x="330" y="420" width="370" height="160" rx="12" />
+  <text class="t" x="346" y="448">Classify the error</text>
+  <text class="s" x="346" y="478"><tspan font-weight="600" fill="#0f172a">Transient</tspan> · timeout, 429 / 5xx, price not ready</text>
+  <text class="s" x="346" y="506"><tspan font-weight="600" fill="#0f172a">Page shifted</tspan> · element missing → fresh class map;</text>
+  <text class="s" x="346" y="524">logged as <tspan class="m">STRUCTURE_CHANGED</tspan> if it never recovers</text>
+  <text class="s" x="346" y="554"><tspan font-weight="600" fill="#0f172a">Permanent</tspan> · 404, option gone, name mismatch</text>
+
+  <rect x="790" y="420" width="375" height="72" rx="12" fill="#fff7e6" stroke="#f3d69a" />
+  <text class="t" x="806" y="446" fill="#8a5a00">↻ Retried</text>
+  <text class="s" x="806" y="470">Back off 2 s × 2ⁿ + jitter, then start again</text>
+  <text class="s" x="806" y="486">from step 2 on a fresh page</text>
+
+  <rect x="790" y="508" width="375" height="72" rx="12" fill="#fdeeee" stroke="#f0b4b4" />
+  <text class="t" x="806" y="534" fill="#b42323">✕ Failed</text>
+  <text class="s" x="806" y="558">Consecutive failures + 1</text>
+  <text class="s" x="806" y="574">The last verified price stays on the dashboard</text>
+
+  <path class="edge" d="M700,456 H786" marker-end="url(#a)" />
+  <text class="lbl" x="710" y="448">tries left</text>
+  <path class="edge" d="M700,544 H786" marker-end="url(#a)" />
+  <text class="lbl" x="710" y="536">3rd try</text>
+  <text class="lbl" x="710" y="562">or permanent</text>
+
+  <text class="lead" x="40" y="628">Every attempt is written to <tspan font-family="'JetBrains Mono', Menlo, monospace" font-size="12">scrape_attempts</tspan>, including retries and failures, with its error code and message.</text>
+  <text class="lead" x="40" y="650">A price is only ever recorded by a successful attempt; the database rejects a price on any other row.</text>
+</svg>

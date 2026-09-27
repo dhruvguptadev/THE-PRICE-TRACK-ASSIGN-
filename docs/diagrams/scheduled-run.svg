@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 930" width="1200" height="930" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Nightwatch scheduled scrape run</title>
+  <style>
+    .h1 { font-size: 20px; font-weight: 600; fill: #0f172a; letter-spacing: -0.01em; }
+    .lead { font-size: 13px; fill: #64748b; }
+    .t { font-size: 14px; font-weight: 600; fill: #0f172a; }
+    .sub { font-size: 11.5px; fill: #64748b; }
+    .msg { font-size: 12.5px; fill: #0f172a; }
+    .m { font-family: 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; fill: #334155; }
+    .note { font-size: 11.5px; fill: #64748b; }
+    .frame-t { font-size: 11.5px; font-weight: 600; fill: #475569; }
+    .head { fill: #ffffff; stroke: #d5dee3; }
+    .life { stroke: #cbd5e1; stroke-width: 1; stroke-dasharray: 4 5; }
+    .edge { stroke: #475569; stroke-width: 1.5; fill: none; }
+    .ret { stroke: #94a3b8; stroke-width: 1.5; fill: none; stroke-dasharray: 5 4; }
+    .ok { stroke: #0c8a0c; }
+    .warn { stroke: #c98a00; }
+    .bad { stroke: #c43434; }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569" /></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8" /></marker>
+    <marker id="ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0c8a0c" /></marker>
+    <marker id="warn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c98a00" /></marker>
+    <marker id="bad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c43434" /></marker>
+  </defs>
+
+  <rect width="1200" height="930" rx="16" fill="#f6f8f8" />
+  <text class="h1" x="40" y="52">A scheduled run, every 2 hours</text>
+  <text class="lead" x="40" y="76">The trigger returns in under a second; the batch runs in the background so cron-job.org's 30 s timeout never matters.</text>
+
+  <!-- Lane heads -->
+  <rect class="head" x="50" y="104" width="160" height="52" rx="10" />
+  <text class="t" x="130" y="127" text-anchor="middle">cron-job.org</text>
+  <text class="sub" x="130" y="144" text-anchor="middle">scheduler</text>
+
+  <rect class="head" x="310" y="104" width="180" height="52" rx="10" fill="#e3f3f1" stroke="#a7d7cf" />
+  <text class="t" x="400" y="127" text-anchor="middle">Express API</text>
+  <text class="sub" x="400" y="144" text-anchor="middle">Render · orchestrator</text>
+
+  <rect class="head" x="580" y="104" width="160" height="52" rx="10" />
+  <text class="t" x="660" y="127" text-anchor="middle">Price scraper</text>
+  <text class="sub" x="660" y="144" text-anchor="middle">Playwright · Chromium</text>
+
+  <rect class="head" x="800" y="104" width="160" height="52" rx="10" />
+  <text class="t" x="880" y="127" text-anchor="middle">Mock storefront</text>
+  <text class="sub" x="880" y="144" text-anchor="middle">/item/:id</text>
+
+  <rect class="head" x="1010" y="104" width="160" height="52" rx="10" />
+  <text class="t" x="1090" y="127" text-anchor="middle">Supabase</text>
+  <text class="sub" x="1090" y="144" text-anchor="middle">Postgres</text>
+
+  <line class="life" x1="130" x2="130" y1="156" y2="860" />
+  <line class="life" x1="400" x2="400" y1="156" y2="860" />
+  <line class="life" x1="660" x2="660" y1="156" y2="860" />
+  <line class="life" x1="880" x2="880" y1="156" y2="860" />
+  <line class="life" x1="1090" x2="1090" y1="156" y2="860" />
+
+  <!-- Keep-awake -->
+  <path class="ret" d="M130,196 H396" marker-end="url(#g)" />
+  <text class="note" x="142" y="188">GET /api/health every 10 min → 200 (never sleeps)</text>
+
+  <!-- Trigger -->
+  <path class="edge" d="M130,246 H396" marker-end="url(#a)" />
+  <text class="msg" x="142" y="238">POST /api/scrape/run · Bearer secret</text>
+
+  <path class="edge" d="M400,290 H1086" marker-end="url(#a)" />
+  <text class="msg" x="414" y="282">INSERT scrape_runs · run_key = <tspan class="m">cron-2026-09-26T08</tspan> (one per 2-hour slot)</text>
+  <text class="note" x="414" y="308">Same slot triggered twice → 200 duplicate, nothing runs</text>
+
+  <path class="ret" d="M400,346 H134" marker-end="url(#g)" />
+  <text class="msg" x="160" y="338">202 Accepted, in &lt; 1 s</text>
+
+  <!-- Background -->
+  <rect x="300" y="370" width="880" height="470" rx="12" fill="#ffffff" fill-opacity="0.55" stroke="#cbd5e1" stroke-dasharray="6 4" />
+  <rect x="300" y="370" width="154" height="24" rx="12" fill="#e3f3f1" />
+  <text class="frame-t" x="314" y="386" fill="#115e59">background batch</text>
+
+  <path class="edge" d="M400,428 H1086" marker-end="url(#a)" />
+  <text class="msg" x="414" y="420">Close runs stuck &gt; 30 min as failed · load active targets</text>
+
+  <path class="edge" d="M400,472 H656" marker-end="url(#a)" />
+  <text class="msg" x="414" y="464">Launch one Chromium</text>
+
+  <!-- Loop -->
+  <rect x="320" y="494" width="840" height="276" rx="10" fill="none" stroke="#94a3b8" />
+  <rect x="320" y="494" width="330" height="24" rx="10" fill="#eef3f3" />
+  <text class="frame-t" x="334" y="510">loop · each target, one at a time · ≤ 3 attempts</text>
+
+  <path class="edge" d="M660,552 H876" marker-end="url(#a)" />
+  <text class="msg" x="672" y="544">Open page · select option · hover · click</text>
+  <path class="ret" d="M880,588 H664" marker-end="url(#g)" />
+  <text class="msg" x="672" y="580">Price + stock, once unlocked</text>
+
+  <!-- Outcomes -->
+  <line x1="340" x2="1140" y1="606" y2="606" stroke="#e2e8f0" />
+  <path class="edge ok" d="M660,640 H1086" marker-end="url(#ok)" />
+  <text class="msg" x="672" y="632"><tspan font-weight="600" fill="#006300">valid</tspan> · one transaction: attempt + observation + current price</text>
+
+  <line x1="340" x2="1140" y1="662" y2="662" stroke="#e2e8f0" stroke-dasharray="3 4" />
+  <path class="edge warn" d="M660,696 H1086" marker-end="url(#warn)" />
+  <text class="msg" x="672" y="688"><tspan font-weight="600" fill="#8a5a00">retryable</tspan> · attempt = retried, back off, fresh page</text>
+
+  <line x1="340" x2="1140" y1="718" y2="718" stroke="#e2e8f0" stroke-dasharray="3 4" />
+  <path class="edge bad" d="M660,752 H1086" marker-end="url(#bad)" />
+  <text class="msg" x="672" y="744"><tspan font-weight="600" fill="#b42323">final</tspan> · attempt = failed, failures + 1, last good price kept</text>
+
+  <text class="note" x="340" y="636">Every attempt is</text>
+  <text class="note" x="340" y="652">a row in the log,</text>
+  <text class="note" x="340" y="668">including retries</text>
+  <text class="note" x="340" y="684">and failures.</text>
+  <text class="note" x="340" y="716">One target failing</text>
+  <text class="note" x="340" y="732">never stops the</text>
+  <text class="note" x="340" y="748">rest of the batch.</text>
+
+  <path class="edge" d="M400,800 H656" marker-end="url(#a)" />
+  <text class="msg" x="414" y="792">Close the browser (in finally)</text>
+
+  <path class="edge" d="M400,824 H1086" marker-end="url(#a)" />
+  <text class="msg" x="414" y="818">Finish run: completed / partial / failed + counts</text>
+
+  <!-- Footer -->
+  <rect x="40" y="868" width="1120" height="42" rx="10" fill="#fff7e6" stroke="#f3d69a" />
+  <text class="msg" x="58" y="894"><tspan font-weight="600" fill="#8a5a00">Never silently stops:</tspan> if no scheduled run starts for 2 h 30 min, <tspan class="m">/api/health</tspan> reports <tspan class="m">schedulerStale: true</tspan> and the dashboard shows a warning.</text>
+</svg>
